@@ -3,11 +3,14 @@ import './App.css';
 import AuthPage from './pages/AuthPage';
 import Dashboard from './pages/Dashboard';
 import Header from './components/Header';
+import {AuthContextProvider} from './context/AuthContext'
+
 
 function App() {
   return (
     <div className="App"> 
      <BrowserRouter>
+    <AuthContextProvider>
      <Header />
     <main>
     <Routes>
@@ -15,6 +18,7 @@ function App() {
       <Route path='/dashboard' element={<Dashboard />} />
     </Routes>
     </main>
+    </AuthContextProvider>
     </BrowserRouter>     
     </div>
   );

@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Paper, TextField, Grid, FormControlLabel,FormControl, FormLabel, RadioGroup, Radio, Button, Snackbar, Alert } from '@mui/material'
 import { Container } from '@mui/system'
 import {makeStyles} from '@mui/styles';
 import TaskService from '../services/TaskService';
 import TaskTable from '../components/TaskTable';
+import { AuthContext } from '../context/AuthContext'
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -16,6 +18,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = () => {
   const {paper} = useStyles()
+  const navigate = useNavigate()
+  const {loggedUserID} = useContext(AuthContext)
   const [tasks,setTasks] = useState({
     name:'',
     details : '',
@@ -78,7 +82,6 @@ const Dashboard = () => {
   }
   const editTask = (id) => {
     const data = taskList.find(data => data.id === id)
-    console.log(data)
     setTasks(()=> {
     return {
           name:data.name,
@@ -119,6 +122,11 @@ const Dashboard = () => {
   useEffect(()=> {
     getTaskDetails()
   },[notification])
+  useEffect(()=> {
+    if(!loggedUserID) {
+      navigate('/')
+    }
+  },[loggedUserID])
 
   return (
     <div>

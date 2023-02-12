@@ -1,9 +1,10 @@
-import { Button, Checkbox, FormControl, FormControlLabel, Input, InputLabel, Paper, Toolbar, Typography } from '@mui/material'
-import { Box, Container } from '@mui/system'
+import { Button, FormControl, FormHelperText, Input, InputLabel, Paper, Toolbar, Typography } from '@mui/material'
+import { Container } from '@mui/system'
 import {makeStyles} from '@mui/styles';
 import { createTheme } from '@mui/material/styles';
-import React from 'react'
-
+import React,{useContext, useEffect, useState} from 'react'
+import { AuthContext } from '../context/AuthContext'
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -24,6 +25,26 @@ const theme = createTheme();
   
 const AuthPage = () => {
   const classes = useStyles(theme);
+  const navigate = useNavigate()
+  const {loginUser, loggedUserID, error} = useContext(AuthContext)
+  const [authenticationData,setAuthenticationData] = useState({
+    email:'',
+    password:''
+  })
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+      setAuthenticationData({ ...authenticationData, [name]: value });
+  };
+  const onRequestLogin = (e) => {
+      loginUser(authenticationData)
+      e.preventDefault();
+    }
+  
+    useEffect(()=> {
+      if(loggedUserID) {
+        navigate('/dashboard')
+      }
+    },[loggedUserID])
   return (
     <div>
         <Container component="main" maxWidth="xs">
@@ -33,35 +54,45 @@ const AuthPage = () => {
             <Typography variant="h5" color="primary">
               Sign in
             </Typography>
-            {/* <form noValidate className={classes.form} onKeyPress={(e) => e.key === 'Enter' && onRequestLogin()}> */}
-            <form noValidate className={classes.form} >
+            <form noValidate className={classes.form} onKeyPress={(e) => e.key === 'Enter' && onRequestLogin()}>
             <FormControl fullWidth>
             <InputLabel  >
-                User Name
+                User Email
             </InputLabel>
-            <Input type='text' autoComplete="username"required='true' fullWidth size='small'/>
+            <Input 
+              type='email' 
+              autoComplete="email"
+              required='true' 
+              fullWidth 
+              size='small'
+              onChange={handleChange}
+              value={authenticationData.email}
+              name="email"
+              labelName="User Email"
+              mandatory={true}/>
             </FormControl>
             <FormControl fullWidth  style={{marginTop:'1rem'}} >
             <InputLabel>
                 Password
             </InputLabel>
-            <Input type='password'   />
-            {/* <FormHelperText style={{ color: 'red' }}>'w'</FormHelperText> */}
+            <Input 
+            type='password'
+            autoComplete="password"
+            required='true' 
+            fullWidth 
+            size='small'
+              onChange={handleChange}
+              value={authenticationData.password}
+              name="password"
+              labelName="User Password"
+              mandatory={true}   />
+              {
+                error && (
+                <FormHelperText style={{ color: 'red' }}>{error}</FormHelperText> 
+                )
+              }
             </FormControl>
-              {/* <FormControlLabel
-                control={
-                  <Checkbox
-                    color="primary"
-                    name="showPassword"
-                  />
-                }
-                label="Show password"
-              /> */}
-              {/* <Typography variant="body2" color="error">
-                {errorMessage}
-              </Typography> */}
-              {/* <Button style={{ marginTop: '16px' }} variant="contained" fullWidth color="primary" size="large" onClick={onRequestLogin}> */}
-              <Button style={{ marginTop: '16px' }} variant="contained" fullWidth color="primary" size="large" >
+              <Button style={{ marginTop: '16px' }} variant="contained" fullWidth color="primary" size="large" onClick={onRequestLogin}>
                 Sign In
               </Button>
             </form>

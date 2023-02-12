@@ -23,7 +23,6 @@ class TaskService {
         })
     }
     deleteTask(id) {
-        console.log(url,'dd')
         return axios.delete(`${url}/${id}`).then(response => {
             if(response && response.status === 200) {
                 return response
