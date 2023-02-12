@@ -1,0 +1,12 @@
+{
+    "userData": [
+      { "id": 1, "email": "raj@example.com","password":"123456" },
+      { "id": 2, "email": "aman@example.com","password":"123456" },
+      { "id": 3, "email": "omkar@example.com","password":"123456" },
+      { "id": 4, "email": "aswini@example.com","password":"123456" },
+      { "id": 5, "email": "priya@example.com","password":"123456" },
+      { "id": 6, "email": "ashu@example.com","password":"123456" },
+      { "id": 7, "email": "rahul@example.com","password":"123456" }
+    ]
+  }
+  
